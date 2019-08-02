@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <script src="artyom.js"></script>
+    <title>Assistente</title>
+</head>
+<body>
+    <span id="Textout"></span>
+    <script>
+        const artyom = new Artyom();
+
+        //Inicia o artyom
+
+        const config = {
+            lang:"pt-PT",// linguagem (Idioma)
+            continuous: true,//reconhecer 1 comando e parar de escutar !
+            listen: true, //Comece a reconhecer
+            debug: false, // Mostrar tudo no console
+        }; 
+
+        artyom.initialize(config)
+
+        var saudacao = {
+            indexes:["Oi", "Bom dia"], // Minha fala, deve ser o que eu devo fala
+            action:function(i){ // função que o artyom deve responder
+                if(i == 0){
+                    artyom.say("Oi");
+                }else if(i == 1){
+                    artyom.say("Bom dia",{
+                    onStart:function(){//função para tratar erro de repitição
+                        artyom.fatality();
+                    },
+                    onEnd:function(){
+                        artyom.initialize(config)//função para tratamento de erro para reiniciar para não ave repitições
+                    }
+                });
+                }
+            }
+        };
+
+        artyom.addCommands(saudacao); //metodo que faz a comunicação acontecer
+
+       /* função de diz que horas são!
+        var time = {
+            indexes:["Que horas são"], // Minha fala, deve ser o que eu devo fala
+            action:function(i){ // função que o artyom deve responder
+                if(i == 0){
+                    data = new Date();
+                    horas = data.getHours();
+                    minutos = data.getMinutes();
+                    artyom.say("São " + horas + " e " + minutos + "minutos");
+                }
+            }
+        };
+
+        artyom.addCommands(time)//metodo que faz a comunicação acontecer
+        */
+       
+        /*função para abrir uma pagina na web
+        var abrir = {
+            indexes:["Abra meu facebook"], // Minha fala, deve ser o que eu devo fala
+            action:function(i){ // função que o artyom deve responder
+                if(i == 0){
+                    artyom.say("Abrir Facebook")
+                    window.open("www.facebook.com", "_blank")
+                }
+            }
+        };
+
+        artyom.addCommands(abrir)
+        */
+
+        /*função inteligente para abrir uma pagina na web
+        var Smart = {
+            indexes:["Abra meu *"], // Aqui deve ser o que eu devo fala
+            smart: true,//forma inteligente
+            action:function(i, str){ // função que o artyom deve responder
+                if((str == "facebook") || (str == "Facebook")){
+                    artyom.say("Abrir Facebook")
+                    window.open("www.facebook.com", "_blank")
+                }else if((str == "gmail") || (str == "Gmail")){
+                    artyom.say("Abrir Gmail")
+                    window.open("www.gmail.com/gmail", "_blank")
+                 }
+            }
+        };
+        */
+
+        artyom.addCommands(abrir)
+        
+
+        //Para fala uma resposta aleatoria. ex: se você fala oi, ele podera respoder, oi, olá ou outra palavra desejada
+        //artyom.sayRandom()
+
+        //A fala do artyom
+        //artyom.say("Olá")
+
+        //Para para o artyom
+        //artyom.fatality();
+
+        /*Para mostrar na tela a palavra falada
+        artyom.redirectRecognizedTextOutput(function(text, EnFinal){
+            const span = document.getElementById("Textout");
+
+            if(EnFinal){
+                span.innerHTML = text;
+            }else{
+                span.innerHTML = ".";
+            }
+        })*/
+
+    </script>
+</body>
+</html>
